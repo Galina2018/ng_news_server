@@ -95,9 +95,15 @@ app.post("/addnews", (req, res) => {
 
       const parsedData = JSON.parse(data);
 
-      const itemToAdd = { ...req.body, id: uuid.v4() };
+      const itemToAdd = { ...req.body.item, id: uuid.v4() };
 
-      parsedData.allnews.push(itemToAdd);
+      const unshift = req.body.unshift;
+
+      if (unshift) {
+        parsedData.allnews.unshift(itemToAdd);
+      } else {
+        parsedData.allnews.push(itemToAdd);
+      }
 
       fs.writeFile(
         path.join(__dirname, "/data/allnews.json"),
